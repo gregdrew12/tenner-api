@@ -123,7 +123,8 @@ celerybeat-schedule.*
 
 # Environments 
 .env 
-.venv 
+.venv
+tenner_venv/ 
 env/ 
 venv/ 
 ENV/ 

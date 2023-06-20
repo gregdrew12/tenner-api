@@ -1,15 +1,15 @@
 # React #
 
 # dependencies
-tenner_fe/node_modules
-tenner_fe/.pnp
-.pnp.js
+node_modules/
+*.pnp
+*.pnp.js
 
 # testing
-tenner_fe/coverage
+coverage/
 
 # production
-tenner_fe/build
+build/
 
 # misc
 .DS_Store

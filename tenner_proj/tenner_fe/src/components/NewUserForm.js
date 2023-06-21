@@ -26,7 +26,7 @@ function NewUserForm(props) {
     if (props.user) {
       setUser({'pk': props.user.pk, 'name': props.user.name, 'email': props.user.email, 'phone': props.user.phone})
     }
-  });
+  }, []);
 
   /* onChange = e => {
     this.setState({ [e.target.name]: e.target.value });

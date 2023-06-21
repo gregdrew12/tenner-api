@@ -20,7 +20,7 @@ function Home() {
   }*/
   useEffect(() => {
     resetState();
-  });
+  }, []);
 
   /*getUsers = () => {
     axios.get(API_URL).then(res => this.setState({ users: res.data }));

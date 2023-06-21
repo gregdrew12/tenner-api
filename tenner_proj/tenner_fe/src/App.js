@@ -1,8 +1,8 @@
 import './App.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import React, { Component, Fragment } from 'react';
-import {Header} from './components/Header';
-import {Login} from './components/Login';
+import Header from './components/Header';
+import Login from './components/Login';
 import {Logout} from './components/Logout';
 import Home from './components/Home';
 
@@ -18,4 +18,5 @@ function App() {
     </BrowserRouter>
   );
 }
+
 export default App;

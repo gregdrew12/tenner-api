@@ -19,7 +19,7 @@ function Home() {
     this.resetState();
   }*/
   useEffect(() => {
-    this.resetState()
+    resetState();
   });
 
   /*getUsers = () => {
@@ -33,7 +33,7 @@ function Home() {
     this.getUsers();
   };*/
   const resetState = () => {
-    this.getUsers();
+    getUsers();
   };
 
   return (

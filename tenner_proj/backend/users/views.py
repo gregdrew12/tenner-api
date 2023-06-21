@@ -1,8 +1,9 @@
 from django.shortcuts import render
 
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, APIView
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from .models import User
 from .serializers import *
@@ -41,3 +42,9 @@ def users_detail(request, pk):
     elif request.method == 'DELETE':
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class HomeView(APIView):
+    permission_classes = (IsAuthenticated, )
+    def get(self, request):
+        content = {'message': 'Welcome to the JWT Authentication page using React Js and Django!'}
+        return Response(content)

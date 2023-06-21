@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
-    'tenner',
     'users'
 ]
 
@@ -57,7 +56,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-ROOT_URLCONF = 'tenner_proj.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATES = [
     {
@@ -75,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'tenner_proj.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 # Database

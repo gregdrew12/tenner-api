@@ -14,12 +14,31 @@ function Home() {
     users: []
   };*/
   const [users, setUsers] = useState([]);
+  const [message, setMessage] = useState(''); 
 
   /*componentDidMount() {
     this.resetState();
   }*/
   useEffect(() => {
     resetState();
+    if(localStorage.getItem('access_token') === null){                   
+      window.location.href = '/login'
+    }
+    else{
+      (async () => {
+        try {
+          const {data} = await axios.get(   
+                          'http://localhost:8000/home/', {
+                          headers: {
+                            'Content-Type': 'application/json'
+                          }}
+          );
+          setMessage(data.message);
+        } catch (e) {
+          console.log('not auth')
+        }
+      })()
+    };
   }, []);
 
   /*getUsers = () => {

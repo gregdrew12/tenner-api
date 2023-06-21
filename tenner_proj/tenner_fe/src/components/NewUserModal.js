@@ -1,55 +1,60 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import NewUserForm from "./NewUserForm";
 
-class NewUserModal extends Component {
-  state = {
-    modal: false
-  };
+/*class NewUserModal extends Component {*/
+function NewUserModal(props) {
 
-  toggle = () => {
+  /* state = {
+    modal: false
+  }; */
+  const [modal, setModal] = useState(false)
+
+  /* toggle = () => {
     this.setState(previous => ({
       modal: !previous.modal
     }));
+  }; */
+  const toggle = () => {
+    setModal(!modal)
   };
 
-  render() {
-    const create = this.props.create;
 
-    var title = "Editing User";
-    var button = <Button onClick={this.toggle}>Edit</Button>;
-    if (create) {
-      title = "Creating New User";
+  const create = props.create;
 
-      button = (
-        <Button
-          color="primary"
-          className="float-right"
-          onClick={this.toggle}
-          style={{ minWidth: "200px" }}
-        >
-          Create New
-        </Button>
-      );
-    }
+  var title = "Editing User";
+  var button = <Button onClick={toggle}>Edit</Button>;
+  if (create) {
+    title = "Creating New User";
 
-    return (
-      <Fragment>
-        {button}
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>{title}</ModalHeader>
-
-          <ModalBody>
-            <NewUserForm
-              resetState={this.props.resetState}
-              toggle={this.toggle}
-              user={this.props.user}
-            />
-          </ModalBody>
-        </Modal>
-      </Fragment>
+    button = (
+      <Button
+        color="primary"
+        className="float-right"
+        onClick={toggle}
+        style={{ minWidth: "200px" }}
+      >
+        Create New
+      </Button>
     );
   }
+
+  return (
+    <Fragment>
+      {button}
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}>{title}</ModalHeader>
+
+        <ModalBody>
+          <NewUserForm
+            resetState={props.resetState}
+            toggle={toggle}
+            user={props.user}
+          />
+        </ModalBody>
+      </Modal>
+    </Fragment>
+  );
 }
 
 export default NewUserModal;

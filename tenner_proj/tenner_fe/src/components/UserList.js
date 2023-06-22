@@ -11,8 +11,7 @@ function UserList(props) {
     <Table dark>
       <thead>
         <tr>
-          <th>Username</th>
-          <th>Password</th>
+          <th>Email</th>
           <th>Registration</th>
           <th></th>
         </tr>
@@ -27,9 +26,8 @@ function UserList(props) {
         ) : (
           users.map(user => (
             <tr key={user.pk}>
-              <td>{user.username}</td>
-              <td>{user.password}</td>
-              <td>{user.registrationDate}</td>
+              <td>{user.email}</td>
+              <td>{user.date_joined.slice(0, 10)}</td>
               <td align="center">
                 <NewUserModal
                   create={false}

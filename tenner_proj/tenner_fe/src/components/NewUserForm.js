@@ -14,7 +14,7 @@ function NewUserForm(props) {
     email: "",
     phone: ""
   }; */
-  const [user, setUser] = useState({'pk': 0, 'name': '', 'email': '', 'phone': ''});
+  const [user, setUser] = useState({'pk': 0, 'username': '', 'password': ''});
 
   /* componentDidMount() {
     if (this.props.user) {
@@ -24,7 +24,7 @@ function NewUserForm(props) {
   } */
   useEffect(() => {
     if (props.user) {
-      setUser({'pk': props.user.pk, 'name': props.user.name, 'email': props.user.email, 'phone': props.user.phone})
+      setUser({'pk': props.user.pk, 'username': props.user.username, 'email': props.user.password})
     }
   }, []);
 
@@ -75,30 +75,21 @@ function NewUserForm(props) {
   return (
     <Form onSubmit={props.user ? editUser : createUser}>
       <FormGroup>
-        <Label for="name">Name:</Label>
+        <Label for="username">Username:</Label>
         <Input
           type="text"
-          name="name"
+          name="username"
           onChange={onChange}
-          value={defaultIfEmpty(user.name)}
+          value={defaultIfEmpty(user.username)}
         />
       </FormGroup>
       <FormGroup>
-        <Label for="email">Email:</Label>
-        <Input
-          type="email"
-          name="email"
-          onChange={onChange}
-          value={defaultIfEmpty(user.email)}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label for="phone">Phone:</Label>
+        <Label for="password">Password:</Label>
         <Input
           type="text"
-          name="phone"
+          name="password"
           onChange={onChange}
-          value={defaultIfEmpty(user.phone)}
+          value={defaultIfEmpty(user.password)}
         />
       </FormGroup>
       <Button>Send</Button>

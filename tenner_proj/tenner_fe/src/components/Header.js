@@ -5,7 +5,7 @@ import React, { useState, useEffect} from 'react';
 export function Header() {
 
   const [isAuth, setIsAuth] = useState(false);
-
+  
   useEffect(() => {
     if(localStorage.getItem('access_token') !== null){
       setIsAuth(true);

@@ -8,7 +8,7 @@ import axios from "axios";
 import { API_URL } from "../constants";
 
 /*class Home extends Component*/
-function Home() {
+const Home = () => {
 
   /*state = {
     users: []
@@ -27,12 +27,12 @@ function Home() {
     else{
       (async () => {
         try {
-          const {data} = await axios.get(   
-                          'http://localhost:8000/home/', {
-                          headers: {
-                            'Content-Type': 'application/json'
-                          }}
-          );
+          const {data} = await axios.get('http://localhost:8000/home/', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
           setMessage(data.message);
         } catch (e) {
           console.log('not auth')

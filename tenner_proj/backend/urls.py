@@ -30,4 +30,5 @@ urlpatterns = [
           jwt_views.TokenRefreshView.as_view(), 
           name ='token_refresh'),
     path('home/', views.HomeView.as_view(), name ='home'),
+    path('logout/', views.LogoutView.as_view(), name ='logout')
 ]

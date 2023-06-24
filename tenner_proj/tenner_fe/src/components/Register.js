@@ -19,7 +19,7 @@ export const Register = () => {
         if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
             setError('Invalid email.')
         }
-        else if (password != passwordRe) {
+        else if (password !== passwordRe) {
             setError('Please make sure both password fields match.')
         }
         else if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/i.test(password)) {
@@ -27,7 +27,7 @@ export const Register = () => {
         }
         else {
             axios.post(API_URL, user).then(res => {
-                if (res.data == 'dupe') {
+                if (res.data === 'dupe') {
                     setError('There is already an account associated with this Email.')
                 }
                 else {

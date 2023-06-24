@@ -5,43 +5,20 @@ import axios from "axios";
 
 import { API_URL } from "../constants";
 
-/* class NewUserForm extends React.Component { */
 function NewUserForm(props) {
   
-  /* state = {
-    pk: 0,
-    name: "",
-    email: "",
-    phone: ""
-  }; */
   const [user, setUser] = useState({'pk': 0, 'email': '', 'password': ''});
 
-  /* componentDidMount() {
-    if (this.props.user) {
-      const { pk, name, email, phone } = this.props.user;
-      this.setState({ pk, name, email, phone });
-    }
-  } */
   useEffect(() => {
     if (props.user) {
       setUser({'pk': props.user.pk, 'email': props.user.email, 'password': props.user.password})
     }
   }, []);
 
-  /* onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  }; */
   const onChange = e => {
     setUser(values => ({...values, [e.target.name]: e.target.value}))
   }
 
-  /* createUser = e => {
-    e.preventDefault();
-    axios.post(API_URL, this.state).then(() => {
-      this.props.resetState();
-      this.props.toggle();
-    });
-  }; */
   const createUser = e => {
     e.preventDefault();
     axios.post(API_URL, user).then(() => {
@@ -50,13 +27,6 @@ function NewUserForm(props) {
     });
   }
 
-  /* editUser = e => {
-    e.preventDefault();
-    axios.put(API_URL + this.state.pk, this.state).then(() => {
-      this.props.resetState();
-      this.props.toggle();
-    });
-  }; */
   const editUser = e => {
     e.preventDefault();
     axios.put(API_URL + user.pk, user).then(() => {
@@ -65,9 +35,6 @@ function NewUserForm(props) {
     });
   };
 
-  /* defaultIfEmpty = value => {
-    return value === "" ? "" : value;
-  }; */
   const defaultIfEmpty = value => {
     return value === "" ? "" : value;
   };

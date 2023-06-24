@@ -51,7 +51,7 @@
 
 .Auth-form {
   width: 420px;
-  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 1px 1px 10px;
   padding-top: 30px;
   padding-bottom: 20px;
   border-radius: 8px;
@@ -69,6 +69,14 @@
   font-size: 24px;
   color: rgb(34, 34, 34);
   font-weight: 800;
+}
+
+.Auth-form-error {
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 20px;
+  color: rgb(255, 0, 0);
+  font-weight: 400;
 }
 
 label {

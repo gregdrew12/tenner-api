@@ -2,23 +2,13 @@ import React, { Component, Fragment, useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import NewUserForm from "./NewUserForm";
 
-/*class NewUserModal extends Component {*/
 function NewUserModal(props) {
 
-  /* state = {
-    modal: false
-  }; */
   const [modal, setModal] = useState(false)
 
-  /* toggle = () => {
-    this.setState(previous => ({
-      modal: !previous.modal
-    }));
-  }; */
   const toggle = () => {
     setModal(!modal)
   };
-
 
   const create = props.create;
 

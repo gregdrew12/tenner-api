@@ -7,18 +7,11 @@ import axios from "axios";
 
 import { API_URL } from "../constants";
 
-/*class Home extends Component*/
 const Home = () => {
 
-  /*state = {
-    users: []
-  };*/
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState(''); 
 
-  /*componentDidMount() {
-    this.resetState();
-  }*/
   useEffect(() => {
     resetState();
     if(localStorage.getItem('access_token') === null){                   
@@ -41,16 +34,10 @@ const Home = () => {
     };
   }, []);
 
-  /*getUsers = () => {
-    axios.get(API_URL).then(res => this.setState({ users: res.data }));
-  };*/
   const getUsers = () => {
     axios.get(API_URL).then(res => setUsers(res.data));
   };
 
-  /*resetState = () => {
-    this.getUsers();
-  };*/
   const resetState = () => {
     getUsers();
   };

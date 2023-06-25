@@ -3,6 +3,7 @@ import {useState} from "react";
 import { API_URL } from "../constants";
 
 export const Register = () => {
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordRe, setPasswordRe] = useState('')

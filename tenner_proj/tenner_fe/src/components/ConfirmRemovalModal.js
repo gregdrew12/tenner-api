@@ -1,32 +1,18 @@
-import React, { Component, Fragment, useState, useRef, useEffect } from "react";
+import React, { Component, Fragment, useState} from "react";
 import { Modal, ModalHeader, Button, ModalFooter } from "reactstrap";
 
 import axios from "axios";
 
 import { API_URL } from "../constants";
 
-/* class ConfirmRemovalModal extends Component { */
 function ConfirmRemovalModal(props) {
-  /* state = {
-    modal: false
-  }; */
+  
   const [modal, setModal] = useState(false);
 
-  /* toggle = () => {
-    this.setState(previous => ({
-      modal: !previous.modal
-    }));
-  }; */
   const toggle = () => {
     setModal(!modal);
   };
 
-  /* deleteUser = pk => {
-    axios.delete(API_URL + pk).then(() => {
-      this.props.resetState();
-      this.toggle();
-    });
-  }; */
   const deleteUser = pk => {
     console.log(props);
     axios.delete(API_URL + pk).then(() => {

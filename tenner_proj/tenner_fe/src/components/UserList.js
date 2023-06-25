@@ -4,7 +4,6 @@ import NewUserModal from "./NewUserModal";
 
 import ConfirmRemovalModal from "./ConfirmRemovalModal";
 
-/*class UserList extends Component {*/
 function UserList(props) {
   const users = props.users;
   return (

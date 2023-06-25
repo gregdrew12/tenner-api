@@ -20,10 +20,10 @@ export const Register = () => {
             setError('Invalid email.')
         }
         else if (password !== passwordRe) {
-            setError('Please make sure both password fields match.')
+            setError('Passwords don\'t match.')
         }
         else if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/i.test(password)) {
-            setError('Invalid password schema.')
+            setError('Password doesn\'t meet the given requirements.')
         }
         else {
             axios.post(API_URL, user).then(res => {
@@ -57,10 +57,14 @@ export const Register = () => {
                         <input name='password' 
                             type="password"     
                             className="form-control mt-1"
-                            placeholder="Enter password"
+                            placeholder="Choose password"
                             value={password}
                             required
                             onChange={e => setPassword(e.target.value)}/>
+                        <label style={{fontSize: '13px', color: 'Gray', opacity: '75%', fontWeight: '500'}}>
+                            Minimum length of 8 characters. <br/>
+                            Must contain at least one upper case letter, number, and special character.<br/>
+                        </label>
                     </div>
                     <div className="form-group mt-3">
                         <label>Confirm Password</label>

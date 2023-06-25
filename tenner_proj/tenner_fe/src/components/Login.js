@@ -6,6 +6,7 @@ import {useState} from "react";
 export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('')
 
     // Create the submit method.
     const submit = async e => {
@@ -19,7 +20,11 @@ export const Login = () => {
         const {data} = await axios.post('http://localhost:8000/token/', user ,{headers: {
             'Content-Type': 'application/json'
         }}, {withCredentials: true});
-                        
+        
+        if (typeof(data) === 'undefined') {
+            setError('Invalid email or password.')
+        }
+
         // Initialize the access & refresh token in localstorage.      
         localStorage.clear();
         localStorage.setItem('access_token', data.access);
@@ -32,6 +37,7 @@ export const Login = () => {
             <form className="Auth-form" onSubmit={submit}>
                 <div className="Auth-form-content">
                     <h3 className="Auth-form-title">Sign In</h3>
+                    <h4 className="Auth-form-error">{error}</h4>
                     <div className="form-group mt-3">
                         <label>Email</label>
                         <input className="form-control mt-1" 

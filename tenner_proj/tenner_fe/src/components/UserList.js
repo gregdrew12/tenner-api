@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Table } from "reactstrap";
 import NewUserModal from "./NewUserModal";
 
@@ -24,7 +24,7 @@ function UserList(props) {
           </tr>
         ) : (
           users.map(user => (
-            <tr key={user.pk}>
+            <tr key={user.id}>
               <td>{user.email}</td>
               <td>{user.date_joined.slice(0, 10)}</td>
               <td align="center">
@@ -35,7 +35,7 @@ function UserList(props) {
                 />
                 &nbsp;&nbsp;
                 <ConfirmRemovalModal
-                  pk={user.pk}
+                  id={user.id}
                   resetState={props.resetState}
                 />
               </td>

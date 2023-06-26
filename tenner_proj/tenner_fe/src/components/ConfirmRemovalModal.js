@@ -1,4 +1,4 @@
-import React, { Component, Fragment, useState} from "react";
+import React, { Fragment, useState} from "react";
 import { Modal, ModalHeader, Button, ModalFooter } from "reactstrap";
 
 import axios from "axios";
@@ -6,16 +6,14 @@ import axios from "axios";
 import { API_URL } from "../constants";
 
 function ConfirmRemovalModal(props) {
-  
   const [modal, setModal] = useState(false);
 
   const toggle = () => {
     setModal(!modal);
   };
 
-  const deleteUser = pk => {
-    console.log(props);
-    axios.delete(API_URL + pk).then(() => {
+  const deleteUser = id => {
+    axios.delete(API_URL + id).then(() => {
       props.resetState();
       toggle();
     });
@@ -38,7 +36,7 @@ function ConfirmRemovalModal(props) {
           <Button
             type="button"
             color="primary"
-            onClick={() => deleteUser(props.pk)}
+            onClick={() => deleteUser(props.id)}
           >
             Yes
           </Button>

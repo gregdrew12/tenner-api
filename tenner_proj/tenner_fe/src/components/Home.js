@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "reactstrap";
 import UserList from "./UserList";
 import NewUserModal from "./NewUserModal";
@@ -6,6 +6,7 @@ import NewUserModal from "./NewUserModal";
 import axios from "axios";
 
 import { API_URL } from "../constants";
+import Spotify from "./Spotify";
 
 const Home = () => {
 
@@ -55,6 +56,11 @@ const Home = () => {
       <Row>
         <Col>
           <NewUserModal create={true} resetState={resetState} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Spotify/>
         </Col>
       </Row>
     </Container>

@@ -142,7 +142,10 @@ venv.bak/
 *.tmPreferences.cache 
 *.stTheme.cache 
 *.sublime-workspace 
-*.sublime-project 
+*.sublime-project
+
+# Spotify
+credentials.py
 
 # sftp configuration file 
 sftp-config.json 

@@ -18,8 +18,9 @@ def users_list(request):
 
     elif request.method == 'POST':
         serializer = UserSerializer(data=request.data)
-        
+        print('here')
         if serializer.is_valid():
+            print('valid')
             serializer.save()
             return Response(status=status.HTTP_201_CREATED)
 
@@ -41,7 +42,7 @@ def users_detail(request, pk):
 
     elif request.method == 'DELETE':
         user.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)    
 
 class HomeView(APIView):
     permission_classes = (IsAuthenticated, )

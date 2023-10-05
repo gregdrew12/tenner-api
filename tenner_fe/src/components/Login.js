@@ -15,7 +15,7 @@ export const Login = () => {
         const user = {
             email: email,
             password: password
-            };
+        };
 
         // Create the POST requuest
         const {data} = await axios.post('http://localhost:8000/token/', user ,{headers: {
@@ -28,6 +28,7 @@ export const Login = () => {
 
         // Initialize the access & refresh token in localstorage.      
         localStorage.clear();
+        localStorage.setItem('email', email);
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
         axios.defaults.headers.common['Authorization'] = `Bearer ${data['access']}`;

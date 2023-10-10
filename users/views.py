@@ -10,21 +10,20 @@ from .serializers import *
 @api_view(['GET', 'POST'])
 def users_list(request):
     if request.method == 'GET':
-        data = User.objects.all()
+        users = User.objects.all()
 
-        serializer = UserSerializer(data, context={'request': request}, many=True)
+        serializer = UserSerializer(users, context={'request': request}, many=True)
 
         return Response(serializer.data)
 
     elif request.method == 'POST':
         serializer = UserSerializer(data=request.data)
-        print('here')
-        if serializer.is_valid():
-            print('valid')
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
 
-        return Response('dupe')
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'User created successfully.'}, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT', 'DELETE'])
 def users_detail(request, pk):

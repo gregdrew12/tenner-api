@@ -2,7 +2,7 @@ from django.db import models
 
 
 class SpotifyToken(models.Model):
-    user = models.EmailField(unique=True)
+    user = models.IntegerField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     refresh_token = models.CharField(max_length=200)
     access_token = models.CharField(max_length=200)

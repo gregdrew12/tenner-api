@@ -22,11 +22,9 @@ def update_or_create_user_tokens(user_id, access_token, token_type, expires_in, 
 
     if tokens:
         tokens.access_token = access_token
-        tokens.refresh_token = refresh_token
         tokens.expires_in = expires_in
         tokens.token_type = token_type
-        tokens.save(update_fields=['access_token',
-                                   'refresh_token', 'expires_in', 'token_type'])
+        tokens.save(update_fields=['access_token', 'expires_in', 'token_type'])
     else:
         tokens = SpotifyToken(user=user_id, access_token=access_token,
                               refresh_token=refresh_token, token_type=token_type, expires_in=expires_in)
@@ -35,6 +33,7 @@ def update_or_create_user_tokens(user_id, access_token, token_type, expires_in, 
 
 
 def is_spotify_authenticated(user_id):
+    print(timezone.now())
     tokens = get_user_tokens(user_id)
     if tokens:
         expiry = tokens.expires_in
@@ -48,19 +47,18 @@ def is_spotify_authenticated(user_id):
 
 def refresh_spotify_token(user_id):
     refresh_token = get_user_tokens(user_id).refresh_token
-
     response = post('https://accounts.spotify.com/api/token', data={
         'grant_type': 'refresh_token',
         'refresh_token': refresh_token,
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET
     }).json()
+    print(response)
 
     access_token = response.get('access_token')
     token_type = response.get('token_type')
     expires_in = response.get('expires_in')
-    refresh_token = response.get('refresh_token')
-
+    
     update_or_create_user_tokens(
         user_id, access_token, token_type, expires_in, refresh_token)
     

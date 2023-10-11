@@ -8,6 +8,7 @@ from .managers import UserManager
 class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     username = models.CharField(max_length = 50, blank = True, null = True, unique = False)
+    current_song = models.CharField(max_length = 100, blank = True, null = True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

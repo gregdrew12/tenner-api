@@ -50,7 +50,7 @@ class HomeView(APIView):
         return Response(content)
     
 class LogoutView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, )
     def post(self, request):
         try:
             refresh_token = request.data["refresh_token"]

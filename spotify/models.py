@@ -8,4 +8,7 @@ class SpotifyToken(models.Model):
     access_token = models.CharField(max_length=200)
     expires_in = models.DateTimeField()
     token_type = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return 'User ' + str(self.user) + '\'s token'
     

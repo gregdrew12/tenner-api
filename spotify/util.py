@@ -61,11 +61,11 @@ def refresh_spotify_token(user_id):
         user_id, access_token, token_type, expires_in, refresh_token)
     
 def execute_spotify_api_request(user_id, endpoint, post_=False, put_=False):
-    tokens = get_user_tokens(user_id)
-    if(not tokens):
-       return {'Error': 'User ' + str(user_id) + ' doesn\'t have a Spotify token.'}
-    headers = {'Content-Type': 'application/json',
-               'Authorization': "Bearer " + tokens.access_token}
+    if(is_spotify_authenticated(user_id)):
+        tokens = get_user_tokens(user_id)
+        headers = {'Content-Type': 'application/json', 'Authorization': "Bearer " + tokens.access_token}
+    else:
+        return {'Error': 'User ' + str(user_id) + ' doesn\'t have a Spotify token.'}
 
     if post_:
         post(BASE_URL + endpoint, headers=headers)

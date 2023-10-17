@@ -95,12 +95,12 @@ class PlaybackList(APIView):
                     playback_serializer = PlaybackSerializer(playback, data={'user': u.id, 'title': response.get('item').get('name'), 'artists': artist_string})
                     if playback_serializer.is_valid():
                         playback_serializer.save()
-                        print('Playback updated successfully.')
+                        print(u.email + '\'s playback updated successfully.')
                 except Playback.DoesNotExist:
                     playback_serializer = PlaybackSerializer(data={'user': u.id, 'title': response.get('item').get('name'), 'artists': artist_string})
                     if playback_serializer.is_valid():
                         playback_serializer.save()
-                        print('Playback created successfully.')
+                        print(u.email + '\'s playback created successfully.')
             
         return Response(status=status.HTTP_200_OK)    
     

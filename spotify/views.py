@@ -9,6 +9,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .util import update_or_create_user_tokens, is_spotify_authenticated, get_user_tokens, execute_spotify_api_request
+from .models import Playback
+from .serializers import *
+from users.models import User
+from users.serializers import UserSerializer
 
 
 class AuthURL(APIView):
@@ -59,7 +63,7 @@ class SpotifyIsAuthenticated(APIView):
         is_authenticated = is_spotify_authenticated(self.request.user.id)
         return Response({'status': is_authenticated}, status=status.HTTP_200_OK)
     
-class CurrentSong(APIView):
+class PlaybackInfo(APIView):
     permission_classes = (IsAuthenticated,)
     def get(self, request, format=None):
         endpoint = "player/currently-playing"
@@ -95,4 +99,37 @@ class CurrentSong(APIView):
         }
 
         return Response(song, status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        users = User.objects.all()
+        endpoint = "player/currently-playing"
+
+        for u in users:
+            response = execute_spotify_api_request(u.id, endpoint)
+            if 'item' not in response:
+                print(u.email, 'isn\'t listening to anything.') 
+            elif 'error' in response:
+                error = response.get('error')
+                print('Error getting user', u.id, '\'s playback info:', error)
+            else:
+                artist_string = ""
+                for i, artist in enumerate(response.get('item').get('artists')):
+                    if i > 0:
+                        artist_string += ", "
+                    name = artist.get('name')
+                    artist_string += name
+
+                try:
+                    playback = Playback.objects.get(user=u.id)
+                    playback_serializer = PlaybackSerializer(playback, data={'user': u.id, 'title': response.get('item').get('name'), 'artists': artist_string})
+                    if playback_serializer.is_valid():
+                        playback_serializer.save()
+                        print('Playback updated successfully.')
+                except Playback.DoesNotExist:
+                    playback_serializer = PlaybackSerializer(data={'user': u.id, 'title': response.get('item').get('name'), 'artists': artist_string})
+                    if playback_serializer.is_valid():
+                        playback_serializer.save()
+                        print('Playback created successfully.')
+            
+        return Response(status=status.HTTP_200_OK)    
     

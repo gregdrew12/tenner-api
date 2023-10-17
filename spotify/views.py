@@ -63,42 +63,13 @@ class SpotifyIsAuthenticated(APIView):
         is_authenticated = is_spotify_authenticated(self.request.user.id)
         return Response({'status': is_authenticated}, status=status.HTTP_200_OK)
     
-class PlaybackInfo(APIView):
+class PlaybackList(APIView):
     permission_classes = (IsAuthenticated,)
     def get(self, request, format=None):
-        endpoint = "player/currently-playing"
-        response = execute_spotify_api_request(self.request.user.id, endpoint)
+        playback_list = Playback.objects.all()
+        playback_dict = {pb.user.id: {'title': pb.title, 'artists': pb.artists} for pb in playback_list}
 
-        if 'error' in response or 'item' not in response:
-            return Response({}, status=status.HTTP_204_NO_CONTENT)
-
-        item = response.get('item')
-        duration = item.get('duration_ms')
-        progress = response.get('progress_ms')
-        album_cover = item.get('album').get('images')[0].get('url')
-        is_playing = response.get('is_playing')
-        song_id = item.get('id')
-
-        artist_string = ""
-
-        for i, artist in enumerate(item.get('artists')):
-            if i > 0:
-                artist_string += ", "
-            name = artist.get('name')
-            artist_string += name
-
-        song = {
-            'title': item.get('name'),
-            'artist': artist_string,
-            'duration': duration,
-            'time': progress,
-            'image_url': album_cover,
-            'is_playing': is_playing,
-            'votes': 0,
-            'id': song_id
-        }
-
-        return Response(song, status=status.HTTP_200_OK)
+        return Response(playback_dict, status=status.HTTP_200_OK)
     
     def post(self, request, format=None):
         users = User.objects.all()

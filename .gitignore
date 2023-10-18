@@ -119,9 +119,6 @@ venv.bak/
 *.sublime-workspace 
 *.sublime-project
 
-# Spotify
-credentials.py
-
 # sftp configuration file 
 sftp-config.json 
 

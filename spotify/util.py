@@ -75,5 +75,5 @@ def execute_spotify_api_request(user_id, endpoint, post_=False, put_=False):
     response = get(BASE_URL + endpoint, {}, headers=headers)
     try:
         return response.json()
-    except:
+    except Exception as e:
         return {'Error': 'Issue with request'}

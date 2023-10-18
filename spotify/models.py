@@ -5,8 +5,8 @@ from users.models import User
 class SpotifyToken(models.Model):
     user = models.IntegerField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    refresh_token = models.CharField(max_length=200)
-    access_token = models.CharField(max_length=200)
+    refresh_token = models.CharField(max_length=300)
+    access_token = models.CharField(max_length=300)
     expires_in = models.DateTimeField()
     token_type = models.CharField(max_length=50)
 

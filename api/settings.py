@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
+    'django_celery_beat',
     'users',
     'spotify'
 ]
@@ -164,3 +165,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 AUTH_USER_MODEL = "users.User"
 
 SESSION_SAVE_EVERY_REQUEST=True
+
+CELERY_BROKER_URL = 'redis://localhost:6380/0'  # Use the new Redis port
+CELERY_RESULT_BACKEND = 'redis://localhost:6380/0'  # Use the new Redis port
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'

@@ -6,12 +6,15 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User
 from .serializers import *
+from .util import *
 
 @api_view(['GET', 'POST'])
 def users_list(request):
     if request.method == 'GET':
-        users = User.objects.all()
-
+        if 'username' in request.GET:
+            users = User.objects.filter(username=request.GET.get('username'))
+        else:
+            users = User.objects.all()
         serializer = UserSerializer(users, context={'request': request}, many=True)
 
         return Response(serializer.data)

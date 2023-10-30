@@ -1,32 +1,43 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, APIView
+from rest_framework.decorators import api_view, permission_classes, APIView
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User
+from .models import User, UserProfile
 from .serializers import *
 from .util import *
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def users_list(request):
     if request.method == 'GET':
         if 'username' in request.GET:
-            users = User.objects.filter(username=request.GET.get('username'))
+            users = UserProfile.objects.filter(username=request.GET.get('username'))
+        elif 'email' in request.GET:
+            users = User.objects.filter(email=request.GET.get('email'))
+            users = [user.profile for user in users]
         else:
-            users = User.objects.all()
-        serializer = UserSerializer(users, context={'request': request}, many=True)
+            users = UserProfile.objects.all()
+        serializer = UserProfileSerializer(users, context={'request': request}, many=True)
 
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = UserSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'message': 'User created successfully.'}, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        user_serializer = UserSerializer(data=request.data)
+        new_user = None
+        if user_serializer.is_valid():
+            new_user = user_serializer.save()
+        else:
+            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        profile_serializer = UserProfileSerializer(data={'user': new_user.id, 'username': request.data.get('username')})
+        if profile_serializer.is_valid():
+            profile_serializer.save()
+            return Response({'message': 'User and profile created successfully.'}, status=status.HTTP_201_CREATED)
+        else:
+            new_user.delete()
+            return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT', 'DELETE'])
 def users_detail(request, pk):
@@ -44,18 +55,28 @@ def users_detail(request, pk):
 
     elif request.method == 'DELETE':
         user.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)    
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-class HomeView(APIView):
+class Following(APIView):
     permission_classes = (IsAuthenticated, )
-    def get(self, request):
-        content = {'message': 'Welcome to the JWT Authentication page using React Js and Django!'}
-        return Response(content)
+    def put(self, request, target_id, format=None):
+        if request.user.id != target_id:
+            try:
+                user = User.objects.get(pk=request.user.id)
+                target_user = User.objects.get(pk=target_id)
+
+                user.profile.following.add(target_user.profile)
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            except Exception as e:
+                print(e)
+                return Response(e, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            print('Can\'t follow yourself.')
+            return Response('Can\'t follow yourself.', status=status.HTTP_400_BAD_REQUEST)
     
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated, )
     def post(self, request):
-        print(request.META.get('HTTP_AUTHORIZATION', ''))
         try:
             refresh_token = request.data["refresh_token"]
             token = RefreshToken(refresh_token)

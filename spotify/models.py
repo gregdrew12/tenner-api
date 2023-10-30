@@ -11,7 +11,7 @@ class SpotifyToken(models.Model):
     token_type = models.CharField(max_length=50)
 
     def __str__(self) -> str:
-        return 'User ' + str(self.user) + '\'s token'
+        return f'User + {str(self.user)} + \'s token'
     
 class Playback(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -19,5 +19,5 @@ class Playback(models.Model):
     artists = models.CharField(max_length=100)
 
     def __str__(self) -> str:
-        return self.title, 'by', self.artists
+        return f'{self.title} by {self.artists}'
     

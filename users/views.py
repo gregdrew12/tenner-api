@@ -9,7 +9,7 @@ from .serializers import *
 from .util import *
 
 
-class UsersList(APIView):
+class UserList(APIView):
     permission_classes = (IsAuthenticated, )
     def get(self, request, format=None):
         if 'username' in request.GET:

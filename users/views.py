@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User, UserProfile
+from .models import User, Profile
 from .serializers import *
 from .util import *
 
@@ -12,16 +12,10 @@ from .util import *
 class UserList(APIView):
     permission_classes = (IsAuthenticated, )
     def get(self, request, format=None):
-        if 'username' in request.GET:
-            users = UserProfile.objects.filter(username=request.GET.get('username'))
-        elif 'email' in request.GET:
-            users = User.objects.filter(email=request.GET.get('email'))
-            users = [user.profile for user in users]
-        else:
-            users = UserProfile.objects.all()
-        serializer = UserProfileSerializer(users, context={'request': request}, many=True)
+        users = User.objects.all()
+        serializer = UserSerializer(users, context={'request': request}, many=True)
 
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
         user_serializer = UserSerializer(data=request.data)
@@ -31,30 +25,60 @@ class UserList(APIView):
         else:
             return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        profile_serializer = UserProfileSerializer(data={'user': new_user.id, 'username': request.data.get('username')})
+        profile_serializer = ProfileSerializer(data={'user': new_user.id})
         if profile_serializer.is_valid():
             profile_serializer.save()
             return Response({'message': 'User and profile created successfully.'}, status=status.HTTP_201_CREATED)
         else:
             new_user.delete()
             return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class Following(APIView):
+        
+class UserDetail(APIView):
     permission_classes = (IsAuthenticated, )
-    def put(self, request, target_id, format=None):
-        if request.user.id != target_id:
-            try:
-                user = User.objects.get(pk=request.user.id)
-                target_user = User.objects.get(pk=target_id)
+    def get(self, request, identifier, format=None):
+        try:
+            if identifier.isdigit():
+                user = User.objects.get(id=int(identifier))
+            else:
+                user = User.objects.get(username=identifier)
+            serializer = UserSerializer(user, context={'request': request})
 
-                user.profile.following.add(target_user.profile)
-                return Response(status=status.HTTP_204_NO_CONTENT)
-            except Exception as e:
-                print(e)
-                return Response(e, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            print('Can\'t follow yourself.')
-            return Response('Can\'t follow yourself.', status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+class FollowerList(APIView):
+    permission_classes = (IsAuthenticated, )
+    def get(self, request, identifier, format=None):
+        try:
+            if identifier.isdigit():
+                user = User.objects.get(id=int(identifier))
+            else:
+                user = User.objects.get(username=identifier)
+            followers = user.followers.all()
+            followers_serializer = UserSerializer(followers, context={'request': request}, many=True)
+
+            return Response(followers_serializer.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+class FollowView(APIView):
+    permission_classes = (IsAuthenticated, )
+    def put(self, request, identifier, format=None):
+        try:
+            if identifier.isdigit():
+                target_user = User.objects.get(id=int(identifier))
+            else:
+                target_user = User.objects.get(username=identifier)
+            user = User.objects.get(pk=request.user.id)
+            if user.id == target_user.id:
+                return Response('Can\'t follow yourself.', status=status.HTTP_400_BAD_REQUEST)
+
+            user.following.add(target_user)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated, )

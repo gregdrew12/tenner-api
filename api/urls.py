@@ -1,13 +1,11 @@
 from django.contrib import admin
-from django.urls import path, re_path, include
+from django.urls import path, include
 from users import views
 from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^api/users/$', views.users_list),
-    re_path(r'^api/users/([0-9]+)$', views.users_detail),
-    path('api/users/following/<int:target_id>/', views.Following.as_view()),
+    path('api/users/', views.UsersList.as_view()),
     path('token/', 
           jwt_views.TokenObtainPairView.as_view(), 
           name ='token_obtain_pair'),

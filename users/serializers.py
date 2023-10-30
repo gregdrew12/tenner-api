@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, UserProfile
+from .models import User, Profile
 from django.contrib.auth.hashers import make_password
 
 class UserSerializer(serializers.ModelSerializer):
@@ -19,8 +19,8 @@ class UserSerializer(serializers.ModelSerializer):
         validated_data['password'] = make_password(validated_data.get('password'))
         return super(UserSerializer, self).create(validated_data)
     
-class UserProfileSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserProfile
+        model = Profile
         fields = '__all__'
     

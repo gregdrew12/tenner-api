@@ -74,7 +74,10 @@ class FollowView(APIView):
             if user.id == target_user.id:
                 return Response('Can\'t follow yourself.', status=status.HTTP_400_BAD_REQUEST)
 
-            user.following.add(target_user)
+            if target_user in user.following.all():
+                user.following.remove(target_user)
+            else:
+                user.following.add(target_user)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
             print(e)
@@ -82,7 +85,7 @@ class FollowView(APIView):
     
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated, )
-    def post(self, request):
+    def post(self, request, format=None):
         try:
             refresh_token = request.data["refresh_token"]
             token = RefreshToken(refresh_token)

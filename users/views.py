@@ -39,6 +39,8 @@ class UserDetail(APIView):
         try:
             if identifier.isdigit():
                 user = User.objects.get(id=int(identifier))
+            elif '@' in identifier:
+                user = User.objects.get(email=identifier)
             else:
                 user = User.objects.get(username=identifier)
             serializer = UserSerializer(user, context={'request': request})

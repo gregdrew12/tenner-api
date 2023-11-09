@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import APIView
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, Profile
@@ -10,7 +10,7 @@ from .util import *
 
 
 class UserList(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (AllowAny, )
     def get(self, request, format=None):
         users = User.objects.all()
         serializer = UserSerializer(users, context={'request': request}, many=True)

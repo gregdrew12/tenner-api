@@ -63,6 +63,6 @@ class PlaybackList(APIView):
     permission_classes = (IsAuthenticated,)
     def get(self, request, format=None):
         playback_list = Playback.objects.all()
-        playback_dict = {pb.user.id: {'title': pb.title, 'artists': pb.artists} for pb in playback_list}
+        playback_dict = {pb.user.id: {'title': pb.title, 'artists': pb.artists, 'cover': pb.cover} for pb in playback_list}
 
         return Response(playback_dict, status=status.HTTP_200_OK)

@@ -17,6 +17,7 @@ class Playback(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     artists = models.CharField(max_length=100)
+    cover = models.URLField()
 
     def __str__(self) -> str:
         return f'{self.title} by {self.artists}'

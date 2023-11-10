@@ -29,12 +29,19 @@ def update_playback():
 
                 try:
                     playback = Playback.objects.get(user=u.id)
-                    playback_serializer = PlaybackSerializer(playback, data={'user': u.id, 'title': response.get('item').get('name'), 'artists': artist_string})
+                    playback_serializer = PlaybackSerializer(playback, data={'user': u.id,
+                                                                            'title': response.get('item').get('name'),
+                                                                            'artists': artist_string,
+                                                                            'cover': response.get('item').get('album').get('images')[0].get('url')})
                     if playback_serializer.is_valid():
                         playback_serializer.save()
+                        print(response.get('item').get('album').get('images')[0].get('url'))
                         print(u.email + '\'s playback updated successfully.')
                 except Playback.DoesNotExist:
-                    playback_serializer = PlaybackSerializer(data={'user': u.id, 'title': response.get('item').get('name'), 'artists': artist_string})
+                    playback_serializer = PlaybackSerializer(data={'user': u.id,
+                                                                   'title': response.get('item').get('name'),
+                                                                   'artists': artist_string,
+                                                                   'cover': response.get('item').get('album').get('images')[0].get('url')})
                     if playback_serializer.is_valid():
                         playback_serializer.save()
                         print(u.email + '\'s playback created successfully.')
